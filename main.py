@@ -19,7 +19,7 @@ CREATE_CHANNEL_ID = 1439444648782467195  # ganti angka channel ID lo
 async def on_voice_state_update(member, before, after):
     # user join trigger channel
     if after.channel and after.channel.id == CREATE_CHANNEL_ID:
-        guild = member.guild
+        guild = member.guild 
         overwrites = {
             guild.default_role: discord.PermissionOverwrite(view_channel=False),
             member: discord.PermissionOverwrite(view_channel=True)
@@ -36,11 +36,14 @@ async def on_voice_state_update(member, before, after):
         await member.move_to(new_channel)
 
     # hapus channel jika kosong dan bukan trigger channel
-    if before.channel:
-        if (
-            before.channel.id != CREATE_CHANNEL_ID
-            and len(before.channel.members) == 0
-        ):
-            await before.channel.delete()
+    # hapus channel jika channel buatan bot dan kosong
+        if before.channel:
+            if (
+                before.channel.id != CREATE_CHANNEL_ID
+                and before.channel.name.startswith("Kamar ")
+                and len(before.channel.members) == 0
+            ):
+                await before.channel.delete()
+
 
 bot.run(TOKEN)
