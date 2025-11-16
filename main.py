@@ -35,15 +35,16 @@ async def on_voice_state_update(member, before, after):
         # pindahin user ke channel baru
         await member.move_to(new_channel)
 
-    # hapus channel jika kosong dan bukan trigger channel
-    # hapus channel jika channel buatan bot dan kosong
-        if before.channel:
-            if (
-                before.channel.id != CREATE_CHANNEL_ID
-                and before.channel.name.startswith("Kamar ")
-                and len(before.channel.members) == 0
-            ):
-                await before.channel.delete()
-
+    # ===============================
+    #   HAPUS CHANNEL KETIKA KOSONG
+    # ===============================
+    if before.channel:
+        if (
+            before.channel.id != CREATE_CHANNEL_ID
+            and before.channel.name.startswith("Kamar ")
+            and len(before.channel.members) == 0
+        ):
+            await before.channel.delete()
 
 bot.run(TOKEN)
+
